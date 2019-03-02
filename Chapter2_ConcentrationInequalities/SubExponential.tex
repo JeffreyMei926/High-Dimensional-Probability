@@ -1,0 +1,144 @@
+
+
+\subsection{Sub-Exponential Distributions}
+We have considered a large class of distributions that contains useful inequalities -- the sub-gaussian distributions. Now, we turn our attention to a secondary class of distributions -- the sub-exponential distributions. Although the sub-gaussian class contains the most important distributions, the sub-exponential class also contains many useful distributions as well. To illustrate, suppose $g_i \sim N(0, 1),$ and therefore, sub-gaussian. As it turns out though, $g_i^2$ is not sub-gaussian. 
+
+\begin{align*}
+    \Prob{g_i^2 > t} &= \Prob{\textcolor{\dgreen}{|g_i|} > \textcolor{\dgreen}{\sqrt{t}}} && \text{take square root} \\
+    &\leq \textcolor{\dgreen}{2\exponential{-(\sqrt{t})^2/2}} && 
+        \text{by exponential tail} \\ 
+    &= 2\exponential{-\textcolor{\dgreen}{t}/2}
+\end{align*}
+Therefore, the sum of squared normal random variables is not sub-gaussian, but sub-exponential.  \\
+
+\begin{tcolorbox}
+\begin{proposition}[Sub-Exponential Properties]
+If $X$ is a random variable, then the following are equivalent, differing by at most, some constant factor. 
+\begin{enumerate}
+    \item The tails of $X$ satisfy
+        $$ \Prob{|X| \geq t} \leq 2 \exponential{-t/K_1} \text{ for $t \geq 0$.} $$
+    \item The moments of $X$ satisfy
+        $$ \|X\|_{L^p} = \left(E[|X|]^p \right)^{1/p} \leq K_2 p \text{ for $p \geq 1$.} $$
+    \item The MGF of $|X|$ satisfies
+        $$\Expect{\exponential{\lambda |X|}} \leq \exponential{K_3 \lambda} \text{ for all $0 \leq \lambda \leq 1/K_3$}$$
+    \item The MGF of $|X|$ is bounded at some point
+        $$ \Expect{\exponential{|X|/K_4}} \leq 2.$$
+\end{enumerate}
+\label{prop:subexp}
+\end{proposition}
+\end{tcolorbox}
+
+% PROOF: Property 2 => 5
+\begin{proof}
+Property $(2 \implies 5):$
+\begin{align*}
+    \Expect{\exponential{\lambda X}} &= \Expect{1 + \lambda x + \frac{\lambda^2 x^2}{2!} + ...} && \text{series expansion} \\ 
+    &= 1 + \lambda \Expect{X} + \sum_{p=2}^{\infty} \frac{\lambda^p \Expect{X}^p}{p!} \\
+    &= 1 + \sum_{p=2}^{\infty} \frac{\lambda^p \Expect{X}^p}{p!} && \text{$\Expect{X} = 0$} \\ 
+    &\leq 1 + \sum_{p=2}^{\infty} \frac{\lambda^p p^p}{p!} && \text{Prop. 2: } \Expect{|X|}^p \leq p^p \\
+    &\leq 1 + \sum_{p=2}^{\infty} \frac{\lambda^p p^p}{(p/e)^p} && \text{Stirling: } p! \geq (p/e)^p \\ 
+    &= 1 + \sum_{p=2}^{\infty} \left(\frac{\lambda p}{(p/e)}\right)^p \\
+    &= 1 + \sum_{p=2}^{\infty} \left(\lambda e\right)^p \\
+    &= 1 + \frac{(\lambda e)^2}{1 - \lambda e} \text{ for $|\lambda e|<1$} && \text{Geometric Series}
+\end{align*}
+The result becomes more beautiful if we tighten the geometric series a little further. That is, for $|\lambda e| < 1/2$, or equivalently for $2|\lambda e| < 1$, we have
+\begin{align*}
+    \Expect{\exponential{\lambda X}} &\leq 1 + \frac{(2\lambda e)^2}{1-2\lambda e} && \text{} \\ 
+    &= \frac{1 - 2\lambda e +  (2\lambda e)^2}{1-2\lambda e} \\ 
+    &= 1 - 2\lambda e
+\end{align*}
+\end{proof}
+
+% =================
+% Property (5 => 2)
+% =================
+\begin{proof}
+Assume property 5 is true. It follows that  
+\begin{align*}
+\textcolor{purple}{|x|^p} &\textcolor{purple}{\leq p^p (e^x + e^{-x})} && \text{given inequality} \\ 
+\Expect{|X|^p} & \leq \Expect{p^p(e^X + e^{-X})} && \text{let $X = x$ and take expectation} \\ 
+&= p^p (\Expect{e^X} + \Expect{e^{-X}}) \\
+\end{align*}
+Notice that from property 5, and with a small enough $K_1$, $\Expect{e^{K_1 X}} \leq 1$ and for big enough $K_2$ $\Expect{e^{-K_2 X}} \leq 1$. Therefore, we have 
+\begin{align*}
+\Expect{|X|^p} &\leq 2p^p \\ 
+\implies (\Expect{|X|^p})^{1/p} &\leq K p. \\ 
+\end{align*}
+\end{proof}
+
+
+
+
+
+
+\begin{tcolorbox}
+\begin{definition}[Sub-Exponential Random Variable]
+A random variable is said to be sub-exponential if it satisfies one of the four properties in Proposition \ref{prop:subexp}. Furthermore, we define the sub-gaussian norm as 
+\begin{equation}
+    \|X\|_{\psi_1} = \inf\{t > 0: \Expect{|X|/t \leq 2}\}
+\end{equation}
+\end{definition}
+\end{tcolorbox}
+
+
+\begin{tcolorbox}
+\begin{lemma}[Sub-Exponential RV is Sub-Gaussian RV Squared]
+If $X$ is a sub-gaussian random variable if and only if $X^2$ is sub-exponential. More precisely,
+$$\|X^2\|_{\psi_1} = \|X\|_{\psi_2}^2$$
+\end{lemma}
+\end{tcolorbox}
+
+\begin{proof}
+Notice the following definitions:
+\begin{align*}
+    \|X\|_{\psi_2} &= \inf\left\{ t > 0: \Expect{\exponential{X^2/t^2}}\leq 2 \right\}  && \text{sub-gaussian defn. of $X^2$} \\
+    \|X^2\|_{\psi_1} &= \inf\left\{ s > 0: \Expect{\exponential{X^2/s}}\leq 2 \right\}  && \text{sub-exponential defn. of $X$} 
+\end{align*}
+Notice, that if $s = t^2$, then the definitions become equivalent, and thus $\|X^2\|_{\psi_1} = \|X\|_{\psi_2}^2.$
+\end{proof}
+
+
+\begin{tcolorbox}
+\begin{lemma}[Product of Sub-Gaussians Is Sub-Exponential]
+If $X$ and $Y$ are sub-gaussian random variables, then $XY$ is a sub-exponential random variable. In particular, we obtain the following relationship:
+\begin{align*}
+    \|XY\|_{\psi_1} &\leq \|X\|_{\psi_2} \|Y\|_{\psi_2} \\ 
+\end{align*}
+\end{lemma}
+\end{tcolorbox}
+
+\begin{proof}
+\begin{align*}
+XY &\leq X^2/2 + Y^2/2 && \text{Young's Inequality} \\ 
+\Expect{XY} &\leq \Expect{\exponential{X^2/2 + Y^2/2}} && \text{} \\ 
+&= \Expect{\exponential{X^2/2} \exponential{Y^2/2}} && \text{} \\ 
+&\leq \Expect{\frac{\exponential{(X^2/2)}^2}{2} + \frac{\exponential{(Y^2/2)}^2}{2}} && \text{Young's Inequality} \\
+&= \frac{1}{2} \Expect{\exponential{X^2} + \exponential{Y^2}} \\ 
+&= \frac{1}{2} \left(\Expect{\exponential{X^2}} + \Expect{\exponential{Y^2}}\right) \\ 
+&\leq \frac{1}{2} \left(2 + 2\right) = 2 && \text{SubGauss. Prop. 4}
+\end{align*}
+\end{proof}
+
+
+\begin{tcolorbox}
+\begin{theorem}[Bernstein's Inequality]
+Let $X_1, ..., X_N$ be independent sub-exponential random variables with mean 0. For $a = (a_1, .., a_N) \in \mathbb{R}^N$, $K = \max_i \|X_i\|_{\psi_1}$, and $t \geq 0, $
+\begin{equation}
+    \Prob{\left|\sum_{i=1}^{N}a_i X_i\right| \geq t} \leq 2\exponential{-c \min\left(\frac{t^2}{K^2\|a\|_{2}^{2}}, \frac{t}{K \|a\|_{\infty}}\right)}
+\end{equation}
+In particular, for $a_i = 1/N, $ we have
+\begin{equation}
+    \Prob{\left|\frac{1}{N} \sum_{i=1}^{N} X_i\right| \geq t} \leq 2\exponential{-c\cdot N \min\left(\frac{t^2}{K^2}, \frac{t}{K}\right)}
+\end{equation}
+\end{theorem}
+\end{tcolorbox}
+
+
+% \begin{tcolorbox}
+% \begin{theorem}[Bennett's Inequality]
+% Let $X_1, ...,, X_N$ be independent random variables. Let $\sigma^2 = \sum_{i=1}^{N}Var(X_i)$ and $h(u) = (1+u)\log(1 + u) - u$. Further, assume $|X_i - \Expect{X_i}| \leq K$ almost surely. It follows that for $t > 0$
+%     \begin{equation}
+%     \Prob{\sum_{i=1}^{N} (X_i - \Expect{X_i}) \geq t} \leq \exponential{-\frac{\sigma^2}{K^2} h\left(\frac{Kt}{\sigma^2}\right)}
+%     \end{equation}
+% \end{theorem}
+% \end{tcolorbox}

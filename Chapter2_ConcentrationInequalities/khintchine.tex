@@ -1,0 +1,108 @@
+
+
+\subsection{General Hoeffding's and Khintchine's Inequalities}
+In this section, we will generalize Hoeffding's inequality. So far, we have only been able to apply Hoeffding's inequality on bounded random variables. We will extend Hoeffding's inequality to sub-gaussian random variables with 0 mean in this section. Since we have now developed the theory for sub-gaussian random variables, we will utilize the theoretical developments of sub-gaussian random variables to avoid the usage of esoteric inequalities in the generalization of Hoeffding's inequality. \\
+
+\begin{tcolorbox}
+\begin{proposition}[Sums of Independent Sub-Gaussians]
+Let $X_1, ..., X_N$ be independent sub-gaussian random variables. It follows that 
+\begin{enumerate}
+    \item $\displaystyle{S_n = \sum_{i=1}^{N} X_i \sim subgaussian}$
+    \item $\displaystyle{\left\|\sum_{i=1}^{N}X_i \right\|_{\psi_2}^2 \leq C \sum_{i=1}^{N}\|X_i\|^2_{\psi_2} }$
+\end{enumerate}
+\label{prop:subg_sum}
+\end{proposition}
+\end{tcolorbox}
+
+% ======
+% Proof 
+% ======
+\begin{proof}
+To begin, we will study the MGF of the sum. 
+\begin{align*}
+    M_{S_n}\lambda &= \Expect{\exponential{\lambda S_n}} && 
+        \text{MGF defn.}  \\ 
+    &= \Expect{\exponential{\lambda \sum_{i=1}^{N} X_i}} && 
+        \text{$S_n = \sum_{i=1}^{N}X_i$} \\ 
+    &= \prod_{i=1}^{N} \Expect{\exponential{\lambda X_i}} &&
+        \text{$X_i$ independent}  
+\end{align*}
+Notice that for an individual $X_i$, it is sub-gaussian. That is 
+\begin{align*}
+    M_{X_i}(\lambda) &= \Expect{\exponential{\lambda X_i}} &&
+        \text{MGF defn.} \\ 
+    &\leq \exponential{C \lambda^2 \|X_i\|_{\psi_2}^2} &&
+        \text{normed sub-gaussian property 5} \\ 
+\end{align*}
+Plugging this inequality back into the MGF of $S_n$ we obtain
+\begin{align*}
+    M_{S_n}(\lambda) &\leq \prod_{i=1}^{N} \exponential{C \lambda^2 \|X_i\|_{\psi_2}^{2}} && \\ 
+    &= \exponential{C \lambda^2 \sum_{i=1}^{N}\|X_i\|_{\psi_2}^2} && \text{exponential property} \\ 
+    &= \exponential{\lambda^2 K^2} && \text{Let $K^2 = C \sum_{i=1}^{N} \|X_i\|_{\psi_2}^{2}$}  
+\end{align*}
+It is clear that $S_n$ follows sub-gaussian property 5. Therefore, it follows that $S_n$ is also sub-gaussian. \\
+%
+\textcolor{red}{Now, we also see that}
+\begin{align*}
+    \left\|\sum_{i=1}^{N}X_i\right\|_{\psi_2} &\leq C_1 K \\ 
+    &= C_1 \sqrt{\sum_{i=1}^{N} \|X_i\|_{\psi_2}^2} \\ 
+    \implies \left\|\sum_{i=1}^{N}X_i\right\|_{\psi_2}^2 &\leq C_1^2 \sum_{i=1}^{N} \|X_i\|_{\psi_2}^2 \\ 
+\end{align*}
+\end{proof}
+
+% ============================
+% Theorem: General Hoeffding's
+% ============================
+\begin{tcolorbox}
+\begin{theorem}[General Hoeffding's Inequaliity for Subgaussian Random Variables]
+Suppose $X_1, ..., X_n$ are independent sub-gaussian random variables with mean 0. 
+\end{theorem}
+\end{tcolorbox}
+
+\begin{align*}
+    S_n \text{ is sub-gaussian }& && \text{Proposition \ref{prop:subg_sum}} \\ 
+    \implies P\left(\left| \sum_{i=1}^{N} X_i \right| \geq t \right) &\leq 2 \exponential{\frac{-Ct^2}{\left\|\sum_{i=1}^{N} X_i\right\|_{\psi_2}^2}} && 
+        \text{normed sub-gaussian prop. 1} \\ 
+    P\left(\left| \sum_{i=1}^{N} X_i \right| \geq t \right) &\leq 2 \exponential{\frac{-Ct^2}{\textcolor{\dgreen}{\sum_{i=1}^{N}\left\| X_i\right\|_{\psi_2}^2}}} && \text{since $\left\| \sum_{i=1}^{N} X_i \right\| \leq C\sum_{i=1}^{N} \|X_i\|_{\psi_2}^{2}$}
+\end{align*}
+
+
+\begin{tcolorbox}
+\begin{theorem}[Khintchine's Inequality]
+Let $X_1, ..., X_n$ be sub-gaussian random variables with 0 mean, and unit variance. For $(a_1, ..., a_n) \in \mathbb{R}^n$ and $p \in [2, \infty]$, it follows that 
+$$ \left(\sum_{i=1}^{N}a_i^2 \right)^{1/2} \leq \left\| \sum_{i=1}^{N}a_i X_i \right\|_{L_p} \leq C K \sqrt{p} \left(\sum_{i=1}^{N} a_i^2 \right)^{1/2} $$
+\end{theorem}
+\end{tcolorbox}
+
+
+\subsection{Centering}
+Concentration inequalities are fundamentally  about how far a random variable may differ from the mean. For convenience, we often assume that random variables have mean 0. Fortunately, if a random variable does not have mean 0, the concentration inequalities that we have developed are unaffected once we center them. 
+
+\begin{tcolorbox}
+\begin{example}
+    Show that the following centering inequality for the $L^2$ norm holds. 
+    $$\|X - \Expect{X} \|_{L^2} \leq \|X\|_{L^2}$$
+\end{example}
+\end{tcolorbox}
+
+\begin{tcolorbox}
+\begin{lemma}[Centered Sub-Gaussian RVs are Sub-Gaussian]
+Suppose $X$ is a sub-gaussian random variable. It follows that $X - \Expect{X}$ is also sub-gaussian. That is, 
+$$\|X - \Expect{X} \|_{\psi_2} \leq C \|X\|_{\psi_2}$$
+\end{lemma}
+\end{tcolorbox}
+
+\begin{proof}
+\begin{align*}
+    \|X - \Expect{X}\|_{\psi_2} &\leq \|X\|_{\psi_2} + \|\Expect{X}\|_{\psi_2} && \text{Triangle Inequality for Norms}\\ 
+    &\leq \|X\|_{\psi_2} + \textcolor{\dgreen}{C|\Expect{X}|} && \text{$\|\Expect{X}\|_{\psi_2} \leq C|X|$ for large $C$} \\
+    &\leq \|X\|_{\psi_2} + C \textcolor{\dgreen}{\Expect{|X|}} && \text{Jensen's Inequality: $f(\Expect{X}) \leq \Expect{f(X)}$} \\ 
+    &= \|X\|_{\psi_2} + C \textcolor{red}{\|X\|_1} && \\
+    &= \|X\|_{\psi_2} + C' \|X\|_{\psi_2} && \text{Property 2: $\|X\|_{L^p} \leq C \|X\|_{\psi_2}\sqrt{p}$ for $p=1$}\\ 
+    &= C''\|X\|_{\psi_2} 
+\end{align*}
+\end{proof}
+
+
+
+

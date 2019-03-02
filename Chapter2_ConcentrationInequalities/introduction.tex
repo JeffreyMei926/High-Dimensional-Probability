@@ -1,0 +1,27 @@
+\pagebreak
+\section{Concentration Inequalities}
+
+The topic of concentration inequalities is a collection of methods and techniques that are used to quantify how much a random variable deviates from its mean. The simplest and most well-known concentration inequality is Chebyshev's inequality -- relating deviations from the mean with the variance of the random variable. Other examples of concentration inequality results include the law of large numbers (because it is a direct result of Chebyshev's inequality), describing the deviation of the sample mean from the true mean. 
+
+Concentration inequalities are powerful and have become a topic of recent interest because it resolves some issues left from classical statistics. Classical results include the law of large numbers and central limit theorem. Although these results are widespread and are powerful in their own right, they are largely qualitative results. 
+
+\indent  - The LLN simply states that the sample mean converges (in probability) towards the true mean of a random variable, but fails to state how quickly the sample mean converges. 
+
+\indent - The CLT simply states that the distribution of the sample mean converges towards the normal distribution for large sample sizes, but fails to state how quickly the distribution converges.  
+
+Whereas classical results \textit{qualitatively} describe convergence behavior, concentration inequalities promise to \textit{quantitatively} describe convergence behavior. This is of particular interest in the age of big data. As statistics transitioned from an esoteric mathematical world into a data-filled modern world, we could no longer fall back on classical methods and relegate sample sizes to infinity. We had to create new methods that were more tangible and could handle concrete sample sizes. 
+
+The recent interest in concentration inequalities has not only improved classical results, but has also been of interest to the rising field of machine learning. Concentration inequalities play a role in learning algorithms because they quantify an algorithm's learning rate. 
+
+In this section, we will introduce several methods for quantifying closeness to the mean in terms of sample size, obtaining tighter bounds, as well as illustrate various qualitative properties we hope to achieve while developing concentration inequalities.  
+
+
+% \begin{example}[Chebyshev's Inequality]
+% \begin{align*}
+%     P\left(S_n \geq \frac{3}{4}N\right) &= P\left(S_n - \frac{N}{2} \geq \frac{N}{4} \right) \\
+%     &\leq P\left(S_n - \frac{N}{2} \geq \frac{N}{4} \right) + P\left( S_n - \frac{N}{2} \leq -\frac{N}{4}\right) && \text{since $0 \leq P(E)$} \\ 
+%     &= P\left(\left|S_n - \frac{N}{2}\right| \geq \frac{N}{4} \right) && \text{defn. of abs. val.} \\
+%     &\leq \frac{(N/4)}{(N/4)^2} && \text{Chebyshev's Inequality} \\ 
+%     &= \frac{4}{N}
+% \end{align*}    
+% \end{example}

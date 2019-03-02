@@ -1,0 +1,184 @@
+
+
+% Hoeffding's Inequality for Symmetric Bernoulli
+\subsection{Hoeffding's Inequality}
+To begin, we will consider one of the simplest concentration inequalities, while demonstrating a powerful technique for finding a concentration inequality. The Hoeffding's inequality that we will consider only considers symmetric Bernoulli random variables. The technique will bind the moment generating function. 
+
+
+
+% ==================================
+% Definition: Symmetric Bernoulli RV
+% ==================================
+\begin{tcolorbox}
+\begin{definition}[Symmetric Bernoulli Random Variables]
+A random variable is said to have a symmetric Bernoulli distribution (also known as Rademacher distribution) if 
+$$P(X=-1) = P(X=1) = 1/2.$$
+\end{definition}
+\begin{remark}
+Alternatively, the distribution may be constructed from the Bernoulli distribution. Suppose $X \sim Bernoulli(1/2)$ and define $Y = 2X-1$. It follows that $Y$ follows the symmetric Bernoulli distribution. 
+\end{remark}
+\end{tcolorbox}
+
+% ===============================
+% Theorem: Hoeffding's Inequality
+% ===============================
+\begin{tcolorbox}
+\begin{theorem}[Hoeffding's Inequality]
+    Assumptions:
+    \begin{itemize}
+    \item $X_1, ..., X_n$ independent and Symmetric Bernoulli RVs
+    \item $a = (a_1, ..., a_N) \in \mathbb{R}^N$
+    \item $t \geq 0$
+    \end{itemize}
+    \begin{equation}
+        \implies P\left(\sum_{i=1}^{N} a_i X_i \geq t\right) \leq \exp{\left(-\frac{t^2}{2\|a\|_{2}^{2}}\right)}
+    \end{equation}
+    In particular, for the sample mean such that $a_i = 1/N$ for $i=1,...,N$, 
+    \begin{equation}
+        P\left(\frac{1}{N}\sum_{i=1}^{N} X_i \geq t\right) \leq \exp{\left(-\frac{t^2}{2}\right)}
+    \end{equation}
+\end{theorem}
+\end{tcolorbox}
+
+% Proof 
+\begin{proof}
+    \begin{align*}
+        P\left( \sum_{i=1}^{N} a_i X_i > t \right) &= P\left( \lambda\sum_{i=1}^{N} a_i X_i > \lambda t \right) && \text{we will optimize for $\lambda$ later} \\
+        &= P\left( \exp\left(\lambda\sum_{i=1}^{N} a_i X_i\right) > \exp\left(\lambda t\right) \right) && \text{exponentiate both sides} \\
+        &\leq \frac{ E\left[ \exp\left(\lambda\sum_{i=1}^{N} a_i X_i\right) \right] }{\exp(\lambda t)} && \text{Markov's Inequality} \\ 
+        &= \exp(-\lambda t) E\left[ \prod_{i=1}^{N}e^{\lambda a_i X_i} \right] \\ 
+        &= \exp(-\lambda t) \prod_{i=1}^{N} E\left[ e^{\lambda a_i X_i} \right] && \text{b/c iid} \\ 
+        &= \exp(-\lambda t) \prod_{i=1}^{N} M_{X_i}(\lambda a_i) && \text{Defn. of MGF} \\ 
+    \end{align*}
+    Consider an individual $i$. It follows that 
+    \begin{align*}
+        M_{X_i} &= E\left[ e^{\lambda a_i X_i} \right] && \text{defn. of MGF} \\ 
+        &= \frac{1}{2} e^{\lambda a_i} + \frac{1}{2} e^{-\lambda a_i} && \text{since $X_i \in \{-1,1\}$} \\ 
+        &= \frac{e^{\lambda a_i} + e^{-\lambda a_i}}{2} \\ 
+        &= \cosh( \lambda a_i ). 
+    \end{align*}
+    We will also make the following observation:
+    \begin{align*}
+        \cosh(x) \leq e^{x^2/2}. \\ 
+    \end{align*}
+    We can see that this is true using the Taylor expansion of both sides, comparing $e^{x^2/2}$ with $\cosh(x)$ to obtain 
+    \begin{align*}
+        e^{x^2/2} &= 1 &&+ \frac{x^2}{(2)(1!)} &&&+ \frac{x^4}{(4)(2!)} &&&&+ \frac{x^6}{(8)(3!)} &&&&&+ ... \\ 
+        \cosh(x) &= 1 &&+ \frac{x^2}{2!} &&&+ \frac{x^4}{4!} &&&&+ \frac{x^6}{6!} &&&&&+ ... \\ 
+    \end{align*}
+    It is easy to see that through the Taylor expansion of both $\cosh(x)$ and $e^{x^2/2}$, $\cosh(x) \leq e^{x^2/2}.$
+    
+    
+    \noindent Returning back to the proof, we have 
+    \begin{align*}
+        P\left( \sum_{i=1}^{N} a_i X_i > t \right) 
+            &\leq \exp(-\lambda t) \prod_{i=1}^{N} M_{X_i}(\lambda a_i) \\ 
+        &\leq \exp(-\lambda t) \prod_{i=1}^{N} e^{\lambda^2 a_i^2 /2} && \text{since $M_{X_i} = \cosh(x) \leq e^{x^2/2}$} \\
+        &= \exp\left( \frac{\lambda^2}{2} \sum_{i=1}^{N}a_i^2 - \lambda t \right) \\ 
+        &= \exp\left( \frac{\lambda^2}{2} - \lambda t \right) && \text{since $||a||_2=1$ } 
+    \end{align*}
+    Now, we see that in order to get a tight upper bound, we must minimize $\exp(\lambda^2/2 - \lambda t).$ By setting $\lambda=t$, we obtain
+    \begin{align*}
+        P\left(\sum_{i=1}^{N} a_i X_i > t \right) &\leq \exp \left( t^2/2 - t^2 \right) \\
+        &= e^{-t^2/2}
+    \end{align*}
+\end{proof}
+
+\begin{tcolorbox}[colback=white!90!gray, title=Proof Technique: Hoeffding's Inequality]
+\begin{enumerate}
+    \item multiply both sides by $\lambda$ (in order to have an optimizing constant)
+    \item exponentiate both sides (in order to get MGF)
+    \item apply Markov's inequality 
+    \item bind MGF with some exponential tail 
+    \item optimize in $\lambda$ to find tight final upper bound
+\end{enumerate}
+\end{tcolorbox}
+
+
+\begin{tcolorbox}
+\begin{theorem}[Hoeffding's Inequality for Bounded Random Variables]
+Let $X_1, ..., X_N$ be independent random variables within the bounds $[m_i, M_i]$. It follows for $t > 0$ that 
+    \begin{equation}
+    \Prob{\sum_{i=1}^{N} (X_i - E[X_i]) \geq t} \leq \exponential{-\frac{2t^2}{\sum_{i=1}^{N}(M_i - m_i)^2}} \\ 
+    \end{equation}
+\end{theorem}
+\end{tcolorbox}
+
+% =============
+% Generalized Hoeffding
+% =============
+\begin{proof}
+    Following a similar proof structure for the Hoeffding's inequality, we will bind the moment generating function.  
+    \begin{align*}
+    \Prob{\sum_{i=1}^{N}(X_i - E[X_i]) \geq t} &= \Prob{ \exponential{ \lambda\sum_{i=1}^{N}( X_i - E[X_i])} \geq \exponential{\lambda t}} && 
+        \text{}  \\
+    &\leq \frac{ \Expect{ \exponential{\lambda \sum_{i=1}^{N} (X_i - \mu_i )} } }{ \exponential{\lambda t} } && \text{Markov Inequality} \\ 
+    &= \frac{ \prod_{i=1}^{N} \Expect{\exponential{\lambda(X_i - \mu_i)}} }{\exponential{\lambda t}} && 
+        \text{} \\
+    \end{align*}
+    % 
+    Consider an individual $i$. For probability distribution $f(x),$ it follows that 
+    % 
+    \begin{align*}
+    \Expect{\exponential{\lambda(X_i - \mu_i)}} = \int_{m_i}^{M_i} e^{\lambda(x - \mu_i)}f(x) dx
+    \end{align*}
+    Notice that $f(x) \leq \textcolor{red}{???}$ for bounded random variables, then we can create an exponential bound on $\Expect{\exponential{\lambda(X_i - \mu_i)}}$. From here, we can easily create the bound 
+\end{proof}
+% =============
+
+\begin{tcolorbox}
+    \begin{example}[Boosting Randomized Algorithms]
+    In machine learning, we often need to classify objects into corresponding categories (e.g. provided an image, is it a picture of a cat or a dog?). Boosting is a technique that employs several algorithms to individually categorize objects. However, the algorithms may not always agree. Therefore, the final decision is determined by a majority vote on the classification of the observation. Let us now consider a randomized algorithm. 
+    
+    Suppose an algorithm has a chance of making the correct decision with probability $1/2 + \delta$ for $\delta>0$. We will boost this algorithm by running the algorithm $N$ times, and then finalizing our decision with a majority vote. Show that for $\varepsilon \in (0,1),$ the answer is correct with probability $1-\varepsilon$ as long as 
+    $$ N \geq \frac{\ln{(1/\varepsilon)}}{2\delta^2} $$
+    \end{example}
+\end{tcolorbox}
+\begin{proof}
+    To begin, let us define some variables. 
+    \begin{align*}
+    & \cdot X_i \sim Bernoulli(1/2 + \delta) \\ 
+    & \cdot X_i = 1 && i\text{th algorithm makes incorrect decision} \\ 
+    & \cdot X_i = 0 && i\text{th algorithm makes correct decision} \\ 
+    & \cdot P(X_i = 1) = 1/2 - \delta && \text{P(Incorrect Decision)} \\ 
+    & \cdot P(X_i = 0) = 1/2 + \delta && \text{P(Correct Decision)} \\ 
+    & \cdot S_n = \sum_{i=1}^{N}X_i && \text{Number of Incorrect Decisions} \\ 
+    \end{align*}
+    
+    \begin{align*}
+    \Prob{\sum_{i=1}^{N}\left(X_i - \Expect{X_i}\right) \geq t} &\leq \exponential{-\frac{2t^2}{\sum_{i=1}^{N}\left(M_i - m_i\right)^2}} && \text{Hoeffding's Inequality} \\ 
+    % 
+    \implies \Prob{\sum_{i=1}^{N}\left(X_i - \textcolor{\darkgreen}{ \left(\frac{1}{2} - \delta \right)}\right) \geq t} &\leq \exponential{-\frac{2t^2}{\sum_{i=1}^{N}\left(\textcolor{\darkgreen}{1 - 0}\right)^2}} && \text{$E[X_i] = \frac{1}{2} - \delta; M_i = 1; m_i = 0$} \\ 
+    &= \exponential{-\frac{2t^2}{\textcolor{\darkgreen}{N}}} 
+    \end{align*}
+%    Our goal is to get the right hand exponential tail be the error term $\varepsilon$. This means that the centered $X_i$ must exceed $(1/2 + \delta)$ in order to result in an incorrect decision within the $i$th iteration of the boosting algorithm. Therefore, we shall let $t = 1/2 + \delta$. It follows that 
+% \begin{align*}
+% \Prob{\sum_{i=1}^{N}\left( X_i - \left(\frac{1}{2} - \delta\right) \geq \frac{1}{2} + \delta \right)}  &\leq \exponential{-\frac{2\textcolor{\darkgreen}{(1/2+\delta)^2}}{N}} &&  
+%     \text{ Let $t = 1/2 + \delta$ }  \\
+% &= \exponential{-\frac{2(\textcolor{\darkgreen}{1/4 + \delta + \delta^2)}}{N}} && \text{} \\
+% &\leq \exponential{
+%     -\left(\frac{1}{2N} \right)
+% } = \varepsilon 
+% \end{align*}
+% Let us now consider the value of $N$ needed in order for the above expression to hold. 
+% \begin{align*}
+% \exponential{
+%     -\left(\frac{1}{2N} \right)
+% } &= \varepsilon \\ 
+% \left(\frac{1}{2N} \right) &= -\ln{\varepsilon} && \text{take log of both sides} \\
+% &= \ln(1/\varepsilon) \\ 
+% \end{align*}
+    Let $t = \delta/2$ because \textcolor{red}{??????} because it works.
+    It follows that we have
+    \begin{align*}
+    \varepsilon = \exponential{-\frac{2t^2}{N}} &= \exponential{-\frac{2\textcolor{\darkgreen}{\delta^2}}{\textcolor{\darkgreen}{4 }N}} && 
+        \text{assign $\varepsilon$} \\ 
+    &= \exponential{-\frac{\delta^2}{2 N}} && 
+        \text{} \\ 
+    -\ln(\varepsilon)  &= \frac{\delta^2}{2 N} \\ 
+    N &= -\frac{1}{\ln{(\varepsilon)}2\delta^2} \\ 
+    &= \frac{1}{\ln{(1/\varepsilon)} 2\delta^2} 
+    \end{align*}
+\end{proof}
+
+

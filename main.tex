@@ -1,0 +1,94 @@
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[left=1.0in,right=1.0in,top=1.0in,bottom=1.0in]{geometry}
+
+\usepackage{amsmath}
+    \usepackage{bbm}
+    \usepackage{amsthm}
+    \usepackage{amssymb}
+    
+\usepackage{tikz}
+    \usepackage{pgfplots}
+    \usetikzlibrary{arrows.meta}
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage{subcaption}
+    
+\usepackage{enumerate}
+\usepackage{setspace}
+\usepackage{tcolorbox}
+
+% -------------------
+% THEOREM ENVIRONMENT
+% -------------------
+\newtheoremstyle{break}
+  {\topsep}{\topsep}% space above and below 
+  {\itshape}{}      % body font
+  {\bfseries}{}     %
+  {\newline}{}%
+\theoremstyle{break}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{corollary}{Corollary}[theorem]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{exercise}[theorem]{exercise}
+\newtheorem{definition}{Definition}[theorem]
+\newtheorem{example}{Example}[theorem]
+% -------------------
+
+% =========
+% Commands 
+% =========
+\newcommand{\Prob}[1]{ 
+    P\left(#1 \right) 
+}
+\newcommand{\Expect}[1]{
+    E\left[#1 \right] 
+}
+\newcommand{\exponential}[1]{
+    \exp\left\{#1 \right\}
+}
+\newcommand{\darkgreen}{blue!30!green}
+\newcommand{\dgreen}{blue!30!green}
+\newcommand{\lblue}{blue!50!white}
+
+
+
+\title{High-Dimensional Probability}
+\author{Jeffrey Mei}
+\date{January 2019}
+\onehalfspacing
+
+\begin{document}
+
+\maketitle
+
+% =======================
+% Chapter 1: Introduction 
+% =======================
+\input{Chapter1_Introduction/RandomVariables.tex}
+\input{Chapter1_Introduction/Classical_Inequalities.tex}
+
+% =====================================
+% Chapter 2: Concentration Inequalities
+% =====================================
+\input{Chapter2_ConcentrationInequalities/introduction.tex}
+\input{Chapter2_ConcentrationInequalities/Hoeffdings.tex}
+\input{Chapter2_ConcentrationInequalities/Chernoff.tex}
+\input{Chapter2_ConcentrationInequalities/RandomGraphs.tex}
+\input{Chapter2_ConcentrationInequalities/subgaussian.tex}
+\input{Chapter2_ConcentrationInequalities/khintchine.tex}
+\input{Chapter2_ConcentrationInequalities/SubExponential.tex}
+
+
+% ============================================
+% Chapter 3: Random Vectors in High Dimensions
+% ============================================
+\pagebreak
+\input{Chapter3_RandomVectors/NormConcentration.tex}
+\input{Chapter3_RandomVectors/PCA.tex}
+
+
+\end{document}

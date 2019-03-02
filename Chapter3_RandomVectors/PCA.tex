@@ -1,0 +1,26 @@
+
+
+\subsection{Principal Component Analysis}
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}
+
+    % Draw Grid
+%    \draw[<->, very thick] (-3, 0) -- (3, 0);
+%    \draw[<->, very thick] (0, -3) -- (0, 3);
+%    \draw[<->, very thick] (-2, -2) -- (2, 2);
+    
+    % Add Points
+    \foreach \x in {-30, ..., 30}{
+        \draw[] (-\x/10, \x/10 + rand) circle (0.1cm);
+    }
+    
+    % Draw PCA
+    \draw[very thick, red, ->] (0, 0) -- (3,-3) node[anchor=west] {$s_1 u_1$};
+    \draw[very thick, red, ->] (0, 0) -- (0.5, 0.5) node[anchor=west] {$s_2 u_2$};
+\end{tikzpicture}
+\end{figure}
+
+
+
